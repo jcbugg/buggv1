@@ -22,7 +22,6 @@ const fetchSuggestions = async (query) => {
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState(''); // Search input value
   const [suggestions, setSuggestions] = useState([]); // List of suggestions
-  const [renderCount, setRenderCount] = useState(0); // Debug counter for re-rendering
   const navigate = useNavigate();
 
   const { refetch } = useQuery({
@@ -58,7 +57,6 @@ const HomePage = () => {
 
   useEffect(() => {
     console.log('Suggestions state changed:', suggestions); // Debugging
-    setRenderCount((prev) => prev + 1); // Force re-render
   }, [suggestions]);
 
   const handleSelect = (item) => {
@@ -81,22 +79,20 @@ const HomePage = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           {suggestions.length > 0 && (
-            <div>
+            <div className="absolute top-full left-0 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
               {console.log('Rendering dropdown with suggestions:', suggestions)}{' '}
               {/* Debugging */}
-              <div className="absolute top-full left-0 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
-                <ul className="list-none p-0 m-0">
-                  {suggestions.map((suggestion) => (
-                    <li
-                      key={suggestion.item}
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => handleSelect(suggestion.item)}
-                    >
-                      {suggestion.item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <ul className="list-none p-0 m-0">
+                {suggestions.map((suggestion) => (
+                  <li
+                    key={suggestion.item}
+                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => handleSelect(suggestion.item)}
+                  >
+                    {suggestion.item}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>
